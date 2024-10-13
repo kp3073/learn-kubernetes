@@ -1,5 +1,5 @@
-appVersion: v1
-kind: pod
+apiVersion: v1
+kind: Pod
 metadata:
   name: frontend
 spec:
