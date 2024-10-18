@@ -31,5 +31,5 @@ spec:
     - name: mysql
       image: mysql:5.7
       env:
-        - name: DEMO_GREETING
-          value: "Hello from the environment"
+        - name: MYSQL_ROOT_PASSWORD
+          value: "ExpenseApp@1"
