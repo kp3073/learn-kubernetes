@@ -58,9 +58,18 @@ metadata:
 spec:
   template:
     spec:
+      imagePullSecrets:
+        - name: aws-ecr
+      restartPolicy: Never
       containers:
         - name: schema
           image:
-          command: [ "perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)" ]
-      restartPolicy: Never
-  backoffLimit: 4
+          env:
+            - name: DBHOST
+              value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
+            - name: DBPASS
+              value: "expenseprod1234"
+            - name: DBUSER
+              value: expenseprod
+            - name: COMPONENT
+              value: backend
