@@ -44,6 +44,7 @@ spec:
           value: expenseprod
   imagePullSecrets:
     - name: aws-ecr
+
 ---
 apiVersion: v1
 kind: Service
