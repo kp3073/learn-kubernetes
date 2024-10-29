@@ -36,8 +36,12 @@ spec:
     - name: backend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.0
       env:
-        - name: DBHOST
+        - name: DB_HOST
           value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
+        - name: DBPASS
+          value: "expenseprod1234"
+        - name: DBUSER
+          value: expenseprod
   imagePullSecrets:
     - name: aws-ecr
 ---
