@@ -38,10 +38,7 @@ spec:
       env:
         - name: DB_HOST
           value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-        - name: DBPASS
-          value: "expenseprod1234"
-        - name: DBUSER
-          value: expenseprod
+
   imagePullSecrets:
     - name: aws-ecr
 
