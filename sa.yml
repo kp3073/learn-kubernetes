@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dummy
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dummy
+  labels:
+    app: dummy
+spec:
+  containers:
+    - name: dummy
+      image: amazon/aws-cli
