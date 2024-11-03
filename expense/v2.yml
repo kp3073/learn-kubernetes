@@ -16,7 +16,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
-  annotations: arn:aws:iam::471112727668:role/prod-expense-frontend-eks-sa
+#  annotations: arn:aws:iam::471112727668:role/prod-expense-frontend-eks-sa
 spec:
   type: LoadBalancer
   selector:
@@ -51,7 +51,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend
-  annotations: arn:aws:iam::471112727668:role/prod-expense-backend-eks-sa
+#  annotations: arn:aws:iam::471112727668:role/prod-expense-backend-eks-sa
 spec:
   selector:
     app: backend
@@ -65,7 +65,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: schema
-  annotations: arn:aws:iam::471112727668:role/prod-expense-schema-eks-sa
+#  annotations: arn:aws:iam::471112727668:role/prod-expense-schema-eks-sa
 spec:
   template:
     spec:
