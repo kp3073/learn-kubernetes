@@ -1,3 +1,4 @@
+#this file for fetching secrests from Parameter store
 apiVersion: v1
 kind: Pod
 metadata:
@@ -17,8 +18,7 @@ kind: Service
 metadata:
   name: frontend
   annotations:
-    eks.amazonaws.com/role-arn: 471112727668.dkr.ecr.us-east-1.amazonaws.com/prod-expense-frontend-eks-sa
-
+    iam.amazonaws.com/role: arn:aws:iam::471112727668:role/prod-expense-frontend-eks-sa
 spec:
   type: LoadBalancer
   selector:
@@ -27,7 +27,9 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+
 ---
+
 apiVersion: v1
 kind: Pod
 metadata:
@@ -54,7 +56,7 @@ kind: Service
 metadata:
   name: backend
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/prod-expense-backend-eks-sa
+    iam.amazonaws.com/role: arn:aws:iam::471112727668:role/prod-expense-backend-eks-sa
 spec:
   selector:
     app: backend
@@ -69,7 +71,7 @@ kind: Job
 metadata:
   name: schema
   annotations:
-    eks.amazonaws.com/role-arn: 471112727668.dkr.ecr.us-east-1.amazonaws.com/prod-expense-schema-eks-sa
+    iam.amazonaws.com/role: arn:aws:iam::471112727668:role/prod-expense-schema-eks-sa
 spec:
   template:
     spec:
@@ -82,7 +84,9 @@ spec:
           env:
             - name: DB_HOST
               value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-            - name: DB_PWD
+            - name: DB_PASS
               value: "expenseprod1234"
             - name: DB_USER
               value: expenseprod
+            - name: COMPONENT
+              value: backend
