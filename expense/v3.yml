@@ -39,7 +39,7 @@ metadata:
 spec:
   containers:
     - name: backend
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.0
+      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.3
       env:
         - name: DB_HOST
           value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
@@ -80,7 +80,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: schema
-          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.3
+          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.6
           env:
             - name: DB_HOST
               value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
