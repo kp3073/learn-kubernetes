@@ -16,24 +16,56 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/prod-expense-frontend-eks-sa
+  annotations: arn:aws:iam::471112727668:role/prod-expense-frontend-eks-sa
 spec:
   type: LoadBalancer
   selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  containers:
+    - name: backend
+      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.1
+      env:
+        - name: DB_HOST
+          value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
+        - name: DB_PWD
+          value: "expenseprod1234"
+        - name: DB_USER
+          value: expenseprod
+  imagePullSecrets:
+    - name: aws-ecr
+
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: backend
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/prod-expense-backend-eks-sa
+  annotations: arn:aws:iam::471112727668:role/prod-expense-backend-eks-sa
 spec:
   selector:
     app: backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+apiVersion: batch/v1
 kind: Job
 metadata:
   name: schema
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/prod-expense-schema-eks-sa
+  annotations: arn:aws:iam::471112727668:role/prod-expense-schema-eks-sa
 spec:
   template:
     spec:
@@ -42,11 +74,11 @@ spec:
       restartPolicy: Never
       containers:
         - name: schema
-          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.4
+          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.3
           env:
             - name: DB_HOST
               value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-            - name: DB_PWD
+            - name: DB_PASS
               value: "expenseprod1234"
             - name: DB_USER
               value: expenseprod
