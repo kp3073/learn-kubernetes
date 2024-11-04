@@ -46,9 +46,9 @@ spec:
   containers:
     - name: backend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.1
-      volumeMounts:
-        - mountPath: /config
-          name: config
+  volumeMounts:
+    - mountPath: /config
+      name: config
   volumes:
     - name: config
       emptyDir:
