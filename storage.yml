@@ -3,14 +3,17 @@ kind: pod
 metadata:
   name: storage-demo
 spec:
-  containers:
+  initContainers:
     - name: con1
       image: centos
+      command: [ "tail" , "-f" ,"/dev/null" ]
   volumeMounts:
     - mountPath: /parameters
       name: cache-volume
+  containers:
     - name: con2
       image: centos
+      command: [ "tail" , "-f" ,"/dev/null" ]
   volumeMounts:
     - mountPath: /parameters
       name: cache-volume
