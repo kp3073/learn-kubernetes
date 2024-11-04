@@ -67,7 +67,8 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: schema
-  annotations: arn:aws:iam::471112727668:role/prod-expense-schema-eks-sa
+  annotations:
+    arn:aws:iam::471112727668:role/prod-expense-schema-eks-sa
 spec:
   template:
     spec:
