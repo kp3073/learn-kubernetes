@@ -17,7 +17,7 @@ kind: Service
 metadata:
   name: frontend
   annotations:
-    eks.amazonaws.com/role-arn: 471112727668.dkr.ecr.us-east-1.amazonaws.com/frontend:5.0.2
+    eks.amazonaws.com/role-arn: 471112727668.dkr.ecr.us-east-1.amazonaws.com/prod-expense-frontend-eks-sa
 
 spec:
   type: LoadBalancer
@@ -54,7 +54,7 @@ kind: Service
 metadata:
   name: backend
   annotations:
-    eks.amazonaws.com/role-arn: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.3
+    eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/prod-expense-backend-eks-sa
 spec:
   selector:
     app: backend
@@ -69,7 +69,7 @@ kind: Job
 metadata:
   name: schema
   annotations:
-    eks.amazonaws.com/role-arn: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.3
+    eks.amazonaws.com/role-arn: 471112727668.dkr.ecr.us-east-1.amazonaws.com/prod-expense-schema-eks-sa
 spec:
   template:
     spec:
