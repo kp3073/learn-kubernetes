@@ -5,6 +5,7 @@ metadata:
   labels:
     app: frontend
 spec:
+  serviceAccountName: frontend
   containers:
     - name: frontend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/frontend:5.0.2
@@ -34,21 +35,22 @@ metadata:
   labels:
     app: backend
 spec:
+  serviceAccountName: backend
   initContainers:
-    - name: aws-params
+    - name: awsparam
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.0
       env:
         - name: INPUT                                              # this is for HOTCODEING Parameter(All comments)
           value: "DB_HOST,prod.rds.endpoint"
-  volumeMounts:
-    - mountPath: /config
-      name: config
+      volumeMounts:
+        - mountPath: /config
+          name: config
   containers:
     - name: backend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.1
-  volumeMounts:
-    - mountPath: /config
-      name: config
+  #  volumeMounts:
+  #    - mountPath: /config
+  #      name: config
   volumes:
     - name: config
       emptyDir:
@@ -88,6 +90,7 @@ metadata:
 spec:
   template:
     spec:
+      serviceAccountName: schema-job
       imagePullSecrets:
         - name: aws-ecr
       restartPolicy: Never
@@ -97,9 +100,9 @@ spec:
           env:
             - name: INPUT
               value: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
-      volumeMounts:
-        - mountPath: /config
-          name: config
+          volumeMounts:
+            - mountPath: /config
+              name: config
       containers:
         - name: schema
           image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.5
@@ -112,9 +115,9 @@ spec:
             #              value: expenseprod
             - name: COMPONENT
               value: backend
-      volumeMounts:
-        - mountPath: /config
-          name: config
+      #      volumeMounts:
+      #        - mountPath: /config
+      #          name: config
       volumes:
         - name: config
           emptyDir:
