@@ -69,7 +69,7 @@ kind: Job
 metadata:
   name: schema
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/prod-expense-schema-eks-sa
+    eks.amazonaws.com/role-arn: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.3
 spec:
   template:
     spec:
