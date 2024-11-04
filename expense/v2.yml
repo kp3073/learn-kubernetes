@@ -5,7 +5,6 @@ metadata:
   labels:
     app: frontend
 spec:
-  serviceAccountName: frontend
   containers:
     - name: frontend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/frontend:5.0.2
@@ -35,7 +34,6 @@ metadata:
   labels:
     app: backend
 spec:
-  serviceAccountName: backend
   initContainers:
     - name: awsparam
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.0
@@ -90,7 +88,6 @@ metadata:
 spec:
   template:
     spec:
-      serviceAccountName: schema-job
       imagePullSecrets:
         - name: aws-ecr
       restartPolicy: Never
