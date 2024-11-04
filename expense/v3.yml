@@ -70,7 +70,6 @@ metadata:
   name: schema
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/prod-expense-schema-eks-sa
-
 spec:
   template:
     spec:
@@ -81,9 +80,9 @@ spec:
         - name: schema
           image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.3
           env:
-        - name: DB_HOST
-          value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-        - name: DB_PWD
-          value: "expenseprod1234"
-        - name: DB_USER
-          value: expenseprod
+            - name: DB_HOST
+              value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
+            - name: DB_PWD
+              value: "expenseprod1234"
+            - name: DB_USER
+              value: expenseprod
