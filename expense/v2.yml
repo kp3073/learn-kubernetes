@@ -46,9 +46,9 @@ spec:
   containers:
     - name: backend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.1
-  #  volumeMounts:
-  #    - mountPath: /config
-  #      name: config
+    volumeMounts:
+      - mountPath: /config
+        name: config
   volumes:
     - name: config
       emptyDir:
@@ -103,18 +103,18 @@ spec:
       containers:
         - name: schema
           image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.5
-          env:
-            #            - name: DB_HOST              # this is for HOTCODEING Parameter(All comments)
-            #              value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-            #            - name: DB_PWD
-            #              value: "expenseprod1234"
-            #            - name: DB_USER
-            #              value: expenseprod
+            #          env:
+            #                        - name: DB_HOST              # this is for HOTCODEING Parameter(All comments)
+            #                          value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
+            #                        - name: DB_PWD
+            #                          value: "expenseprod1234"
+            #                        - name: DB_USER
+            #                          value: expenseprod
             - name: COMPONENT
               value: backend
-      #      volumeMounts:
-      #        - mountPath: /config
-      #          name: config
+            volumeMounts:
+              - mountPath: /config
+                name: config
       volumes:
         - name: config
           emptyDir:
