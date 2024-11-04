@@ -105,7 +105,7 @@ spec:
             name: config
       containers:
         - name: schema
-          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.6
+          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.7
           env:
             #            - name: DB_HOST
             #              value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
