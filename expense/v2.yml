@@ -18,7 +18,6 @@ metadata:
   name: frontend
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/prod-expense-frontend-eks-sa
-
 spec:
   type: LoadBalancer
   selector:
@@ -35,25 +34,9 @@ metadata:
   labels:
     app: backend
 spec:
-  #  initContainers:
-  #    - name: awsparam
-  #      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.3
-  #      env:
-  #        - name: INPUT                                              # this is for HOTCODEING Parameter(All comments)
-  #          value: "DB_HOST,prod.rds.endpoint"
-  #      volumeMounts:
-  #        - mountPath: /config
-  #          name: config
   containers:
     - name: backend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.1
-      #    volumeMounts:
-      #      - mountPath: /config
-      #        name: config
-      #  volumes:
-      #    - name: config
-      #      emptyDir:
-      #        sizeLimit: 5Mi
       env:
         - name: DB_HOST                                              # this is for HOTCODEING Parameter(All comments)
           value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
@@ -92,31 +75,15 @@ spec:
       imagePullSecrets:
         - name: aws-ecr
       restartPolicy: Never
-      initContainers:
-        - name: aws-params
-          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.3
-      #          env:
-      #            - name: INPUT
-      #              value: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
-      #          volumeMounts:
-      #            - mountPath: /config
-      #              name: config
-      containers:
+      Containers:
         - name: schema
           image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.5
-            env:
-                - name: DB_HOST              # this is for HOTCODEING Parameter(All comments)
-                  value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-                  - name: DB_PWD
-                    value: "expenseprod1234"
-                  - name: DB_USER
-                    value: expenseprod
-#            - name: COMPONENT
-#              value: backend
-#            volumeMounts:
-#              - mountPath: /config
-#                name: config
-#      volumes:
-#        - name: config
-#          emptyDir:
-#            sizeLimit: 5Mi
+          env:
+            - name: DB_HOST              # this is for HOTCODEING Parameter(All comments)
+              value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
+            - name: DB_PWD
+              value: "expenseprod1234"
+            - name: DB_USER
+              value: expenseprod
+            - name: COMPONENT
+              value: backend
