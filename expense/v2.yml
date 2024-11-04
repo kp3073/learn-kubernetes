@@ -112,9 +112,9 @@ spec:
             #              value: expenseprod
             - name: COMPONENT
               value: backend
-        volumeMounts:
-          - mountPath: /config
-            name: config
+      volumeMounts:
+        - mountPath: /config
+          name: config
       volumes:
         - name: config
           emptyDir:
