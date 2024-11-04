@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: pod
+metadata:
+  name: storage-demo
+spec:
+  containers:
+    - name: con1
+      image: centos
+  volumeMounts:
+    - mountPath: /parameters
+      name: cache-volume
+    - name: con2
+      image: centos
+  volumeMounts:
+    - mountPath: /parameters
+      name: cache-volume
+  volumes:
+    - name: parameters
+      emptyDir:
+        sizeLimit: 5Mi

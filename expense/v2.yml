@@ -8,8 +8,8 @@ spec:
   containers:
     - name: frontend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/frontend:5.0.2
-  imagePullSecrets:
-    - name: aws-ecr
+#  imagePullSecrets:
+#    - name: aws-ecr
 
 ---
 apiVersion: v1
@@ -38,14 +38,14 @@ spec:
     - name: backend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.0
       env:
-        - name: DB_HOST
-          value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-        - name: DB_PWD
-          value: "expenseprod1234"
-        - name: DB_USER
-          value: expenseprod
-  imagePullSecrets:
-    - name: aws-ecr
+#        - name: DB_HOST                                              # this is for HOTCODEING Parameter(All comments)
+#          value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
+#        - name: DB_PWD
+#          value: "expenseprod1234"
+#        - name: DB_USER
+#          value: expenseprod
+#  imagePullSecrets:
+#    - name: aws-ecr
 
 ---
 apiVersion: v1
@@ -79,11 +79,11 @@ spec:
         - name: schema
           image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.4
           env:
-            - name: DB_HOST
-              value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-            - name: DB_PWD
-              value: "expenseprod1234"
-            - name: DB_USER
-              value: expenseprod
+            #            - name: DB_HOST
+            #              value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
+            #            - name: DB_PWD
+            #              value: "expenseprod1234"
+            #            - name: DB_USER
+            #              value: expenseprod
             - name: COMPONENT
               value: backend
