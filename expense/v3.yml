@@ -42,7 +42,7 @@ spec:
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.3
       env:
         - name: INPUT
-          value: "DB_HOST,prod.rds.endpoint"
+          value: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
       volumeMounts:
         - mountPath: /config
           name: config
@@ -56,15 +56,6 @@ spec:
     - name: config
       emptyDir:
         sizeLimit: 5Mi
-#      env:
-#        - name: DB_HOST
-#          value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-#        - name: DB_PWD
-#          value: "expenseprod1234"
-#        - name: DB_USER
-#          value: expenseprod
-#  imagePullSecrets:
-#    - name: aws-ecr
 
 ---
 apiVersion: v1
@@ -107,12 +98,6 @@ spec:
         - name: schema
           image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.7
           env:
-            #            - name: DB_HOST
-            #              value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-            #            - name: DB_PASS
-            #              value: "expenseprod1234"
-            #            - name: DB_USER
-            #              value: expenseprod
             - name: COMPONENT
               value: backend
           volumeMounts:
