@@ -100,9 +100,9 @@ spec:
           env:
             - name: INPUT
               value: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
-        volumeMounts:
-          - mountPath: /config
-            name: config
+          volumeMounts:
+            - mountPath: /config
+              name: config
       containers:
         - name: schema
           image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.7
@@ -115,9 +115,9 @@ spec:
             #              value: expenseprod
             - name: COMPONENT
               value: backend
-        volumeMounts:
-          - mountPath: /config
-            name: config
+          volumeMounts:
+            - mountPath: /config
+              name: config
       volumes:
         - name: config
           emptyDir:
