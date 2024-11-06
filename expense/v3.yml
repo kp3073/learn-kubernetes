@@ -42,7 +42,7 @@ spec:
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.5
       env:
         - name: INPUT
-          value: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
+          value: "DB_HOST,prod.rds.endpoint"
       volumeMounts:
         - mountPath: /config
           name: config
