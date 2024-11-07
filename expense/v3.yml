@@ -96,7 +96,7 @@ spec:
               name: config
       containers:
         - name: schema
-          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.7
+          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:4.0.0
           env:
             - name: COMPONENT
               value: backend
