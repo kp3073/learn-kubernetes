@@ -1,3 +1,9 @@
+#this file for fetching secrests from Parameter store
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: frontend
+---
 apiVersion: v1
 kind: Pod
 metadata:
@@ -5,12 +11,12 @@ metadata:
   labels:
     app: frontend
 spec:
+  serviceAccountName: frontend
   containers:
     - name: frontend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/frontend:5.0.2
   imagePullSecrets:
     - name: aws-ecr
-
 ---
 apiVersion: v1
 kind: Service
@@ -29,24 +35,37 @@ spec:
 
 ---
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backend
+---
+apiVersion: v1
 kind: Pod
 metadata:
   name: backend
   labels:
     app: backend
 spec:
+  initContainers:
+    - name: awsparam
+      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.8
+      env:
+        - name: INPUT
+          value: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
+      volumeMounts:
+        - mountPath: /config
+          name: config
   containers:
     - name: backend
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.1
-      env:
-        - name: DB_HOST
-          value: aurora-cluster-dev.cluster-cjmks6wgq3k7.us-east-1.rds.amazonaws.com
-        - name: DB_PWD
-          value: "expenseprod1234"
-        - name: DB_USER
-          value: expenseprod
-  imagePullSecrets:
-    - name: aws-ecr
+      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.4
+      volumeMounts:
+        - mountPath: /config
+          name: config
+  serviceAccountName: backend
+  volumes:
+    - name: config
+      emptyDir:
+        sizeLimit: 5Mi
 
 ---
 apiVersion: v1
@@ -62,7 +81,11 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
-
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: schema
 ---
 apiVersion: batch/v1
 kind: Job
@@ -73,9 +96,22 @@ metadata:
 spec:
   template:
     spec:
+      serviceAccountName: schema
+      imagePullSecrets:
+        - name: aws-ecr
+      restartPolicy: Never
+      initContainers:
+        - name: awsparam
+          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.9
+          env:
+            - name: INPUT
+              value: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
+          volumeMounts:
+            - mountPath: /config
+              name: config
       containers:
         - name: schema
-          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:3.0.7
+          image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-schema:4.0.1
           env:
             - name: COMPONENT
               value: backend
@@ -86,6 +122,3 @@ spec:
         - name: config
           emptyDir:
             sizeLimit: 5Mi
-      imagePullSecrets:
-        - name: aws-ecr
-      restartPolicy: Never
