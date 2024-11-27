@@ -1,4 +1,3 @@
-#this file for fetching secrests from Parameter store
 apiVersion: v1
 kind: ServiceAccount
 metadata:
