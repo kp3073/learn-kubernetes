@@ -1,11 +1,17 @@
 #this file for fetching secrests from Parameter store
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: frontend
+---
+apiVersion: v1
 kind: Pod
 metadata:
   name: frontend
   labels:
     app: frontend
 spec:
+  serviceAccountName: frontend
   containers:
     - name: frontend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/frontend:5.0.2
@@ -29,7 +35,11 @@ spec:
       targetPort: 80
 
 ---
-
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backend
+---
 apiVersion: v1
 kind: Pod
 metadata:
@@ -47,11 +57,12 @@ spec:
         - mountPath: /config
           name: config
   containers:
-    - name: backend
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.4
-      volumeMounts:
-        - mountPath: /config
-          name: config
+    -serviceAccountName: backend
+                           - name: backend
+                           image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.4
+                           volumeMounts:
+                             - mountPath: /config
+                               name: config
   volumes:
     - name: config
       emptyDir:
@@ -71,7 +82,11 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
-
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: schema
 ---
 apiVersion: batch/v1
 kind: Job
@@ -82,6 +97,9 @@ metadata:
 spec:
   template:
     spec:
+      serviceAccountName: schema
+      containers:
+        - name: schema
       imagePullSecrets:
         - name: aws-ecr
       restartPolicy: Never
