@@ -1,17 +1,19 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: test
-  annotations: arn:aws:iam::471112727668:role/eks-iam-role-dummy
+  name: dummy
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/eks-iam-role-dummy
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: test
+  name: dummy
   labels:
-    app: test
+    app: dummy
 spec:
+  serviceAccountName: dummy
   containers:
-    - name: test
+    - name: dummy
       image: amazon/aws-cli
-      command: [ "tail","-f" , "/dev/null" ]
+      command: [ "tail", "-f", "/dev/null" ]
