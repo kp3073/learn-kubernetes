@@ -1,0 +1,9 @@
+appName: backend
+appVersion: 1.0.0
+service:
+  type: clusterIP
+  port: 80
+  targetPort: 8080
+initContainers:
+  enabled: true
+  
