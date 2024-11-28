@@ -42,6 +42,7 @@ metadata:
   labels:
     app: backend
 spec:
+  serviceAccountName: backend
   initContainers:
     - name: awsparam
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.8
@@ -57,7 +58,6 @@ spec:
       volumeMounts:
         - mountPath: /config
           name: config
-  serviceAccountName: backend
   volumes:
     - name: config
       emptyDir:
