@@ -36,6 +36,13 @@ spec:
 
 ---
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backend
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::471112727668:role/prod-expense-backend-eks-sa
+---
+apiVersion: v1
 kind: Pod
 metadata:
   name: backend
