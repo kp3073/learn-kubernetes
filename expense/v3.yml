@@ -53,11 +53,11 @@ spec:
                         - name: awsparam
                         image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:2.0.8
                         env:
-                          - name: INPUT
-                            value: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
-                        volumeMounts:
-                          - mountPath: /config
-                            name: config
+                        - name: INPUT
+                          value: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
+                          volumeMounts:
+                        - mountPath: /config
+                          name: config
   containers:
     - name: backend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/backend:3.0.4
