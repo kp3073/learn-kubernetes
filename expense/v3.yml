@@ -16,8 +16,7 @@ spec:
   containers:
     - name: frontend
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/frontend:5.0.2
-  imagePullSecrets:
-    - name: aws-ecr
+
 ---
 apiVersion: v1
 kind: Service
@@ -102,8 +101,6 @@ spec:
   template:
     spec:
       serviceAccountName: schema
-      imagePullSecrets:
-        - name: aws-ecr
       restartPolicy: Never
       initContainers:
         - name: awsparam
