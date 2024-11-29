@@ -1,17 +1,16 @@
-  appName: backend
-  appVersion: 2.0.1
-  replicas: 2
-  
-  service:
-    type: ClusterIP
-    port: 80
-    targetPort: 8080
-  initContainers:
-    enabled: true
-    imageVersion: 2.0.9
-    INPUT: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
-  
-  job:
-    enabled: true
-    INPUT: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
-    imageVersion: 2.0.9
+appName: backend
+appVersion: 3.0.4
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+initContainers:
+  imageVersion: 2.0.9
+  INPUT: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
+  enabled: true
+
+job:
+  enabled: true
+  appName: schema
+  INPUT: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
+  imageVersion: 4.0.1

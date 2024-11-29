@@ -1,33 +1,35 @@
+{{-if .Values.job.enabled}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-name: {{.Values.appName}}
+name: {{.Values.job.appName}}
 annotations:
   iam.amazonaws.com/role: arn:aws:iam::471112727668:role/prod-expense-{{ .Values.appName }}-eks-sa
 spec:
 template:
   spec:
-    serviceAccountName: {{.Values.appName}}
+    serviceAccountName: {{.Values.job.appName}}
     restartPolicy: Never
     initContainers:
-      - name: awsparam
-        image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{ .Values.initContainers.imageVersion }}
-        env:
-          - name: INPUT
-            value: "{{ .Values.job.INPUT }}"
-        volumeMounts:
-          - mountPath: /config
-            name: config
+    - name: awsparam
+      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{ .Values.initContainers.imageVersion }}
+      env:
+      - name: INPUT
+        value: "{{ .Values.job.INPUT }}"
+      volumeMounts:
+      - mountPath: /config
+        name: config
     containers:
-      - name: {{.Values.appName}}
-        image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-{{ .Values.appName }}:{{ .Values.appVersion }}
-        env:
-          - name: COMPONENT
-            value: backend
-        volumeMounts:
-          - mountPath: /config
-            name: config
+    - name: {{.Values.job.appName}}
+      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-{{.Values.job.appName}}:{{ .Values.job.imageVersion }}
+      env:
+      - name: COMPONENT
+        value: backend
+      volumeMounts:
+      - mountPath: /config
+        name: config
     volumes:
-      - name: config
-        emptyDir:
-          sizeLimit: 5Mi
+    - name: config
+      emptyDir:
+        sizeLimit: 5Mi
+  {{-end}}
