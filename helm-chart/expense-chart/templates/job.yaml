@@ -1,4 +1,3 @@
-{{- if .Values.initContainers.enabled}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -7,6 +6,7 @@ metadata:
     app: {{.Values.appName}}
 spec:
   serviceAccountName: {{.Values.appName}}
+  {{- if .Values.initContainers.enabled}}
   initContainers:
   - name: awsparam
     image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{.Values.initContainers.imageVersion}}
