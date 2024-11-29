@@ -1,35 +1,54 @@
-{ { -if .Values.job.enabled } }
+{{- if .Values.job.enabled}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-name: {{.Values.job.appName}}
-annotations:
-  iam.amazonaws.com/role: arn:aws:iam::471112727668:role/prod-expense-{{ .Values.appName }}-eks-sa
+  name: {{.Values.job.appName}}
+  annotations:
+    iam.amazonaws.com/role: arn:aws:iam::471112727668:role/prod-expense-{{ .Values.appName }}-eks-sa
 spec:
-template:
-  spec:
-    serviceAccountName: {{.Values.job.appName}}
-    restartPolicy: Never
-    initContainers:
+  backoffLimit: 3  # Add retry limit for failed jobs
+  ttlSecondsAfterFinished: 100  # Cleanup completed jobs
+  template:
+    metadata:
+      labels:
+        app: {{.Values.job.appName}}  # Add labels for better organization
+    spec:
+      serviceAccountName: {{.Values.job.appName}}
+      restartPolicy: Never
+      initContainers:
       - name: awsparam
         image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{ .Values.initContainers.imageVersion }}
         env:
-          - name: INPUT
-            value: "{{ .Values.job.INPUT }}"
+        - name: INPUT
+          value: {{.Values.job.INPUT | quote}}  # Use quote function for proper string handling
+        resources: # Add resource limits
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         volumeMounts:
-          - mountPath: /config
-            name: config
-    containers:
+        - mountPath: /config
+          name: config
+      containers:
       - name: {{.Values.job.appName}}
-        image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-{{.Values.job.appName}}:{{ .Values.job.imageVersion }}
+        image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-{{ .Values.job.appName }}:{{ .Values.job.imageVersion }}
         env:
-          - name: COMPONENT
-            value: backend
+        - name: COMPONENT
+          value: backend
+        resources: # Add resource limits
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "1000m"
         volumeMounts:
-          - mountPath: /config
-            name: config
-    volumes:
+        - mountPath: /config
+          name: config
+      volumes:
       - name: config
         emptyDir:
           sizeLimit: 5Mi
-  { { -end } }
+  {{- end}}
