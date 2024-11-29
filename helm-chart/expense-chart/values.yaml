@@ -1,2 +1,6 @@
 initContainers:
   enabled: false
+pod:
+  enabled: false
+service:
+  enabled: false

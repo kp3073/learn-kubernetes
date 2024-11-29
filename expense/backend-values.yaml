@@ -1,9 +1,14 @@
 appName: backend
-appVersion: 1.0.0
+appVersion: 3.0.4
 service:
   type: clusterIP
   port: 80
   targetPort: 8080
 initContainers:
   enabled: true
-  
+  imageVersion: 2.0.9
+  INPUT: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
+job:
+  enabled: true
+  imageVersion: 2.0.9
+  INPUT: "DB_HOST,prod.rds.endpoint DB_USER,prod.rds.master_username DB_PWD,prod.rds.master_password"
