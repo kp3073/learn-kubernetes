@@ -1,6 +1,4 @@
 initContainers:
   enabled: false
-pod:
-  enabled: false
-service:
+job:
   enabled: false
