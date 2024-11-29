@@ -8,27 +8,26 @@ metadata:
 spec:
   serviceAccountName: {{.Values.appName}}
   initContainers:
-    - name: awsparam
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{.Values.initContainers.imageVersion}}
+  - name: awsparam
+    image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{.Values.initContainers.imageVersion}}
   env:
-    - name: INPUT
-      value: "{{.Values.initContainers.INPUT}}"
-      volumeMounts:
+  - name: INPUT
+    value: "{{.Values.initContainers.INPUT}}"
+    volumeMounts:
+  - mountPath: /config
+    name: config
+  containers:
+  - name: {{.Values.appName}}
+    image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/{{.Values.appName}}:{{.Values.appVersion}}
+    volumeMounts:
     - mountPath: /config
       name: config
-  containers:
-    - name: {{.Values.appName}}
-      image:
-        471112727668.dkr.ecr.us-east-1.amazonaws.com/{{.Values.appName}}:{{.Values.appVersion}}
-      volumeMounts:
-        - mountPath: /config
-          name: config
   volumes:
-    - name: config
-      emptyDir:
-        sizeLimit: 5Mi
+  - name: config
+    emptyDir:
+      sizeLimit: 5Mi
   {{- else}}
-  containers:
-    - name: {{.values.appName}}
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/{{.values.appName}}:{{.values.appVersion}}
+containers:
+- name: {{.values.appName}}
+  image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/{{.values.appName}}:{{.values.appVersion}}
   {{- end}}
