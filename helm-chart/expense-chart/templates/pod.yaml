@@ -1,29 +1,33 @@
-{ { - if .Values.pod.enabled } }
-
-apiVersion: v1
-kind: Pod
+{ { - if .Values.job.enabled } }
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: { { .Values.appName } }
-  labels:
-    app: { { .Values.appName } }
+  name: { { .Values.appName } }-schema
 spec:
-  serviceAccountName: { { .Values.appName } }
-  { { - if .Values.initContainers.enabled } }
-  initContainers:
-    - name: awsparam
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{ .Values.initContainers.imageVersion }}
-      env:
-        - name: INPUT
-          value: "{{ .Values.initContainers.INPUT }}"
-      volumeMounts:
-        - mountPath: /config
-          name: config
-  { { - end } }
-  volumes:
-    - name: config
-      emptyDir:
-        sizeLimit: 5Mi
-  containers:
-    - name: { { .Values.appName } }
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/{{ .Values.appName }}:{{ .Values.appVersion }}
+  template:
+    spec:
+      serviceAccountName: { { .Values.appName } }
+      restartPolicy: Never
+      initContainers:
+        - name: awsparam
+          image: 739561048503.dkr.ecr.us-east-1.amazonaws.com/expense-parameter-init-container:{{ .Values.initContainers.imageVersion }}
+          env:
+            - name: INPUT
+              value: "{{ .Values.job.INPUT }}"
+          volumeMounts:
+            - mountPath: /config
+              name: config
+      containers:
+        - name: schema
+          image: 739561048503.dkr.ecr.us-east-1.amazonaws.com/expense-schema-load:{{ .Values.job.imageVersion }}
+          env:
+            - name: COMPONENT
+              value: { { .Values.appName } }
+          volumeMounts:
+            - mountPath: /config
+              name: config
+      volumes:
+        - name: config
+          emptyDir:
+            sizeLimit: 5Mi
   { { - end } }
