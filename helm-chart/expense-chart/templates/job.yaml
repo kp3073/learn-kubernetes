@@ -1,14 +1,14 @@
-{ { - if .Values.job.enabled } }
+{{- if .Values.job.enabled}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-name: { { .Values.appName } }
+name: {{.Values.appName}}
 annotations:
   iam.amazonaws.com/role: arn:aws:iam::471112727668:role/prod-expense-{{ .Values.appName }}-eks-sa
 spec:
 template:
   spec:
-    serviceAccountName: { { .Values.appName } }
+    serviceAccountName: {{.Values.appName}}
     restartPolicy: Never
     initContainers:
       - name: awsparam
@@ -20,7 +20,7 @@ template:
           - mountPath: /config
             name: config
     containers:
-      - name: { { .Values.appName } }
+      - name: {{.Values.appName}}
         image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-load-{{ .Values.appName }}:{{ .Values.appVersion }}
         env:
           - name: COMPONENT
@@ -32,4 +32,4 @@ template:
       - name: config
         emptyDir:
           sizeLimit: 5Mi
-  { { - end } }
+  {{- end}}
