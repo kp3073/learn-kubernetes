@@ -1,4 +1,4 @@
-{{if .Values.pod.enabled}}
+{ { if .Values.pod.enabled } }
 
 apiVersion: v1
 kind: Pod
@@ -30,4 +30,4 @@ spec:
     - name: {{.Values.appName}}
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/{{ .Values.appName }}:{{ .Values.appVersion}}
   { { end } }
-{ { end } }
+  { { end } }
