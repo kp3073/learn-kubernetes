@@ -1,32 +1,29 @@
-{ { if .Values.pod.enabled } }
+{ { - if .Values.pod.enabled } }
 
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{.Values.appName}}
+  name: { { .Values.appName } }
   labels:
-    app: {{.Values.appName}}
+    app: { { .Values.appName } }
 spec:
-  serviceAccountName: {{.Values.appName}}
-  {{if .Values.initContainers.enabled}}
+  serviceAccountName: { { .Values.appName } }
+  { { - if .Values.initContainers.enabled } }
   initContainers:
+    - name: awsparam
+      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{ .Values.initContainers.imageVersion }}
+      env:
+        - name: INPUT
+          value: "{{ .Values.initContainers.INPUT }}"
+      volumeMounts:
+        - mountPath: /config
+          name: config
+  { { - end } }
   volumes:
     - name: config
       emptyDir:
         sizeLimit: 5Mi
-    - name: awsparam
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{.Values.initContainers.imageVersion}}
-  env:
-    - name: INPUT
-      value: "{{.Values.initContainers.INPUT}}"
-      volumeMounts:
-    - mountPath: /config
-      name: config
   containers:
-    - name: {{.Values.appName}}
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/{{ .Values.appName }}:{{ .Values.appVersion}}
-  {{else}}
-  containers:
-    - name: {{.Values.appName}}
-      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/{{ .Values.appName }}:{{ .Values.appVersion}}
-  { { end } }
+    - name: { { .Values.appName } }
+      image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/{{ .Values.appName }}:{{ .Values.appVersion }}
+  { { - end } }
