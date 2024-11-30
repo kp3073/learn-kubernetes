@@ -15,11 +15,11 @@ spec:
         app: {{.Values.appName}}
     spec:
       serviceAccountName: {{.Values.appName}}
-    {{- if .Values.initContainers.enabled}}
-    volumes:
-    - name: config
-      emptyDir:
-        sizeLimit: 5Mi
+      {{- if .Values.initContainers.enabled}}
+      volumes:
+      - name: config
+        emptyDir:
+          sizeLimit: 5Mi
     initContainers:
     - name: aws-param
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/expense-parameters-init:{{ .Values.initContainers.imageVersion }}
@@ -35,7 +35,7 @@ spec:
       volumeMounts:
       - mountPath: /config
         name: config
-    {{- else}}
+      {{- else}}
     containers:
     - name: {{.Values.appName}}
       image: 471112727668.dkr.ecr.us-east-1.amazonaws.com/{{ .Values.appName }}:{{ .Values.appVersion }}
